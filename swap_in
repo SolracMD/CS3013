@@ -1,0 +1,34 @@
+void swap_in(char ** arguments){
+	int i,j;
+	int present_flag;
+	u_int8_t PID = atoi(arguments[0]);		// store PID for further use
+	u_int8_t VA = atoi(arguments[2]);		// store virtual address for further use
+	u_int8_t VPN;							// virtual page number
+	u_int8_t PFN;							// page frame number
+	u_int8_t disk_address;
+	u_int8_t offset;
+
+
+	//use the disk offset to read from file
+	/// page table , check meom or disk
+	////
+
+	///regular page, get offset in the file. present bit in page table. 1 is in memory the other is in disk.
+	for(i =0; i<4; i++){
+		if(registers[i]!= 128 && (registers[i] && 1) == 1){
+			VPN = VA >> 4;
+			u_int8_t PToffset = registers[i] & 48;
+			u_int8_t PTEaddr = PToffset + VPN;// get the PTE address
+			PFN = (memory[PTEaddr] & 48) >> 4;
+			lseek(fd,PFN * 16,SEEK_SET);
+			read(fd,buf,16);
+			int freePage;
+			freePage: isFree();
+				for(j=0; j> 15: j++){
+					memory[freePage + j] = buf[j];
+			}
+		}
+
+	}
+
+}
